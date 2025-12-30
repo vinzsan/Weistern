@@ -11,6 +11,6 @@ project(KazuMyLove)
 
 add_executable(test ${SRC_FILE})
 
-target_link_libraries(test raylib)
+target_link_libraries(test PRIVATE ${CMAKE_SOURCE_DIR}/lib raylib)
 
 target_compile_options(test PRIVATE -O3)

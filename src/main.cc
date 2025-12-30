@@ -1,8 +1,10 @@
 #include <iostream>
 #include <memory>
-#include <raylib.h>
 #include <atomic>
 #include <stdexcept>
+
+#include "../include/raylib.h"
+#include "../include/raymath.h"
 
 #define WIDTH 850
 #define HEIGHT 400
@@ -213,6 +215,7 @@ protected:
   bool facing = true;
   int speed = 90;
   float movement = 0.0f;
+  bool show_text = false;
 
   bool walking = false;
   bool lock_anim = false;
@@ -278,6 +281,13 @@ public:
     DrawTextPro(mdata.font,"[Untracked : Vinz?] [ Use 'E' to see hints ]",
       Vector2 {10,10},Vector2 {0,0},0.0,20.0f,0.2f,GRAY
     );
+    
+    if(show_text){
+      DrawRectangle(0, s_height * 0.10f, s_width, s_height * 0.10f, Color {255,255,255,20});
+      DrawTextEx(mdata.font,"[Apis] : What is this thing..? ,i thought it never happend before..",
+        Vector2 { 10,s_height * 0.10f},20.0f,0.0,YELLOW
+      );
+    }
   }
 
   void update() override {
@@ -349,6 +359,12 @@ public:
       anim_state = SpriteAnimWalk::Teleport;
       lock_anim = true;
     }
+
+    if(IsKeyPressed(KeyboardKey::KEY_R)){
+      show_text = true;
+    }
+
+    if(walking) show_text = false;
 
     if(!lock_anim) anim_state = walking ? SpriteAnimWalk::Walk : SpriteAnimWalk::Idle;
     bgrolling.x += movement;
